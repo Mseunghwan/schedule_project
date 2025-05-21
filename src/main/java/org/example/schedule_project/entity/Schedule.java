@@ -25,10 +25,15 @@ public class Schedule extends BaseEntity {
 
     }
 
-
     public Schedule(String todo, String writeUser, String password) {
         this.todo = todo;
         this.writeUser = writeUser;
         this.password = password;
     }
+
+    public void update(String todo, String writeUser){
+        this.todo = todo;
+        this.writeUser = writeUser;
+    }
+
 }
