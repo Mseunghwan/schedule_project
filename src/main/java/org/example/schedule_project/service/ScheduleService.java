@@ -5,6 +5,8 @@ import org.example.schedule_project.entity.Schedule;
 import org.example.schedule_project.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ScheduleService {
 
@@ -24,5 +26,10 @@ public class ScheduleService {
 
         return new ScheduleResponseDto(savedSchedule.getId(), savedSchedule.getTodo(), savedSchedule.getWriteUser());
 
+    }
+
+    public List<ScheduleResponseDto> findAll() {
+
+        return scheduleRepository.findAll().stream().map(ScheduleResponseDto::toDto).toList();
     }
 }

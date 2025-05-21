@@ -1,6 +1,7 @@
 package org.example.schedule_project.dto;
 
 import lombok.Getter;
+import org.example.schedule_project.entity.Schedule;
 
 @Getter
 public class ScheduleResponseDto {
@@ -16,5 +17,9 @@ public class ScheduleResponseDto {
         this.id = id;
         this.todo = todo;
         this.writeUser = writeUser;
+    }
+
+    public static ScheduleResponseDto toDto(Schedule schedule) {
+        return new ScheduleResponseDto(schedule.getId(), schedule.getTodo(), schedule.getWriteUser());
     }
 }
