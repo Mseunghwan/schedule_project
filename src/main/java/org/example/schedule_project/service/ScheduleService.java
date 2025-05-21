@@ -32,4 +32,11 @@ public class ScheduleService {
 
         return scheduleRepository.findAll().stream().map(ScheduleResponseDto::toDto).toList();
     }
+
+    public ScheduleResponseDto findById(Long id) {
+
+        Schedule schedule = scheduleRepository.findByIdOrThrow(id);
+
+        return new ScheduleResponseDto(schedule.getId(), schedule.getTodo(), schedule.getWriteUser());
+    }
 }
