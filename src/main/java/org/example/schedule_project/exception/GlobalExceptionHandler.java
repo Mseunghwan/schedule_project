@@ -1,5 +1,6 @@
 package org.example.schedule_project.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestControllerAdvice // 다른 처리 필요없이 @RestController 에서 작동하는 exception handler
 public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
@@ -28,7 +30,15 @@ public class GlobalExceptionHandler {
     // 이외 예외 발생 handler
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleOtherExceptions(Exception e) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
+        log.error("예기치 못한 서버 오류 발생", e);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put("error", "Internal Server Error");
+        body.put("message", "서버 오류가 발생했습니다.");
+
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // Response 형식 지정
@@ -44,18 +54,19 @@ public class GlobalExceptionHandler {
 
     // 마찬가지로 유효성 검사를 위한 ExceptionHandler 작성
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationError(MethodArgumentNotValidException e) {
+    public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException e) {
+        e.printStackTrace(); // ★ 콘솔에 무조건 출력
         Map<String, Object> body = new HashMap<>();
-
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("error", "Bad Request");
 
-        // 첫 번째 에러 메시지만 추출
+        // 첫 번째 오류 메시지만 간단히 추출
         String message = e.getBindingResult().getFieldErrors().stream()
-                .map(fieldError -> fieldError.getDefaultMessage())
+                .map(error -> error.getDefaultMessage())
                 .findFirst()
-                .orElse("잘못된 요청입니다.");
+                .orElse("잘못된 입력입니다.");
+
         body.put("message", message);
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
