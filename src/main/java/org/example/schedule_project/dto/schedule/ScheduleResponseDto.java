@@ -21,6 +21,6 @@ public class ScheduleResponseDto {
     }
 
     public static ScheduleResponseDto toDto(Schedule schedule) {
-        return new ScheduleResponseDto(schedule.getId(), schedule.getTodo(), schedule.getUserId());
+        return new ScheduleResponseDto(schedule.getId(), schedule.getTodo(), schedule.getUser().getId());
     }
 }

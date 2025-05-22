@@ -7,6 +7,8 @@ import org.example.schedule_project.dto.schedule.ScheduleResponseDto;
 import org.example.schedule_project.dto.schedule.UpdateScheduleRequestDto;
 import org.example.schedule_project.entity.schedule.Schedule;
 import org.example.schedule_project.service.schedule.ScheduleService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +32,19 @@ public class ScheduleController {
                         requestDto.getPassword()
                 );
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
-
+        return new ResponseEntity<>(scheduleResponseDto, HttpStatus.CREATED);
 }
+
+
+    // Paging
+    @GetMapping("/page")
+    public ResponseEntity<Page<ScheduleResponseDto>> getSchedules(Pageable pageable) {
+
+        Page<ScheduleResponseDto> schedulePage = scheduleService.findAllByPage(pageable);
+
+        return new ResponseEntity<>(schedulePage, HttpStatus.OK);
+    }
+
 
     // 전체 일정 조회
     @GetMapping()
