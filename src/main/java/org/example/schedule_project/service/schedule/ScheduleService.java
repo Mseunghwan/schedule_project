@@ -5,6 +5,7 @@ import org.example.schedule_project.dto.schedule.DeleteScheduleRequestDto;
 import org.example.schedule_project.dto.schedule.ScheduleResponseDto;
 import org.example.schedule_project.entity.schedule.Schedule;
 import org.example.schedule_project.entity.user.User;
+import org.example.schedule_project.exception.MismatchException;
 import org.example.schedule_project.repository.schedule.ScheduleRepository;
 import org.example.schedule_project.repository.user.UserRepository;
 import org.springframework.data.domain.Page;
@@ -80,8 +81,8 @@ public class ScheduleService {
         Schedule findSchedule = scheduleRepository.findByIdOrThrow(id);
 
         // 받은 password가 기존 password와 동일하지 않으면 exception 던져주고 아니면
-        if (!findSchedule.getPassword().equals(requestDto.getPassword())){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Password does not match");
+        if (!findSchedule.getPassword().equals(requestDto.getPassword())) {
+            throw new MismatchException("비밀번호가 일치하지 않습니다.");
         }
 
         // 삭제
