@@ -1,10 +1,11 @@
-package org.example.schedule_project.service;
+package org.example.schedule_project.service.schedule;
 
 import jakarta.transaction.Transactional;
-import org.example.schedule_project.dto.DeleteScheduleRequestDto;
-import org.example.schedule_project.dto.ScheduleResponseDto;
-import org.example.schedule_project.entity.Schedule;
-import org.example.schedule_project.repository.ScheduleRepository;
+import org.example.schedule_project.dto.schedule.DeleteScheduleRequestDto;
+import org.example.schedule_project.dto.schedule.ScheduleResponseDto;
+import org.example.schedule_project.entity.schedule.Schedule;
+import org.example.schedule_project.entity.user.User;
+import org.example.schedule_project.repository.schedule.ScheduleRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,15 +21,15 @@ public class ScheduleService {
         this.scheduleRepository = scheduleRepository;
     }
 
-    public ScheduleResponseDto save(String todo, String writeUser, String password) {
+    public ScheduleResponseDto save(String todo, Long userId, String password) {
 
         // 받은 todo, writeUser로 스케쥴 객체 하나 만듦
-        Schedule schedule = new Schedule(todo, writeUser, password);
+        Schedule schedule = new Schedule(todo, userId, password);
 
         // scheduleRepository에 save
         Schedule savedSchedule = scheduleRepository.save(schedule);
 
-        return new ScheduleResponseDto(savedSchedule.getId(), savedSchedule.getTodo(), savedSchedule.getWriteUser());
+        return new ScheduleResponseDto(savedSchedule.getId(), savedSchedule.getTodo(), savedSchedule.getUserId());
 
     }
 
@@ -41,11 +42,11 @@ public class ScheduleService {
 
         Schedule schedule = scheduleRepository.findByIdOrThrow(id);
 
-        return new ScheduleResponseDto(schedule.getId(), schedule.getTodo(), schedule.getWriteUser());
+        return new ScheduleResponseDto(schedule.getId(), schedule.getTodo(), schedule.getUserId());
     }
 
     @Transactional
-    public void updateSchedule(Long id, String todo, String writerUser, String password) {
+    public void updateSchedule(Long id, String todo, Long userId, String password) {
 
         // 기존 일정 있는지 확인해서 부르고
         Schedule findSchedule = scheduleRepository.findByIdOrThrow(id);
@@ -56,7 +57,7 @@ public class ScheduleService {
         }
 
         // 할일, 작성자 명 변경
-        findSchedule.update(todo, writerUser);
+        findSchedule.update(todo, userId);
     }
 
     public void delete(Long id, DeleteScheduleRequestDto requestDto) {
@@ -72,4 +73,11 @@ public class ScheduleService {
         scheduleRepository.delete(findSchedule);
 
     }
+
+    public List<ScheduleResponseDto> findByUserId(Long userId) {
+        List<Schedule> schedules = scheduleRepository.findByUserId(userId);
+
+        return schedules.stream().map(ScheduleResponseDto::toDto).toList();
+    }
+
 }

@@ -1,13 +1,12 @@
-package org.example.schedule_project.controller;
+package org.example.schedule_project.controller.schedule;
 
 import lombok.RequiredArgsConstructor;
-import org.example.schedule_project.dto.CreateScheduleRequestDto;
-import org.example.schedule_project.dto.DeleteScheduleRequestDto;
-import org.example.schedule_project.dto.ScheduleResponseDto;
-import org.example.schedule_project.dto.UpdateScheduleRequestDto;
-import org.example.schedule_project.entity.Schedule;
-import org.example.schedule_project.repository.ScheduleRepository;
-import org.example.schedule_project.service.ScheduleService;
+import org.example.schedule_project.dto.schedule.CreateScheduleRequestDto;
+import org.example.schedule_project.dto.schedule.DeleteScheduleRequestDto;
+import org.example.schedule_project.dto.schedule.ScheduleResponseDto;
+import org.example.schedule_project.dto.schedule.UpdateScheduleRequestDto;
+import org.example.schedule_project.entity.schedule.Schedule;
+import org.example.schedule_project.service.schedule.ScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class ScheduleController {
         ScheduleResponseDto scheduleResponseDto =
                 scheduleService.save(
                         requestDto.getTodo(),
-                        requestDto.getWriteUser(),
+                        requestDto.getUserId(),
                         requestDto.getPassword()
                 );
 
@@ -35,13 +34,15 @@ public class ScheduleController {
 
 }
 
-    @GetMapping
+    // 전체 일정 조회
+    @GetMapping()
     public ResponseEntity<List<ScheduleResponseDto>> getAll() {
         List<ScheduleResponseDto> scheduleResponseDtoList = scheduleService.findAll();
 
         return new ResponseEntity<>(scheduleResponseDtoList, HttpStatus.OK);
     }
 
+    // 일정 id로 조회
     @GetMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> getById(@PathVariable Long id) {
 
@@ -51,12 +52,22 @@ public class ScheduleController {
 
     }
 
+     // --> User id로 일정 검색될 수 있도록 수정
+     @GetMapping("/user/{userId}")
+     public ResponseEntity<List<ScheduleResponseDto>> getSchedulesByUser(@PathVariable Long userId) {
+         List<ScheduleResponseDto> schedulesResponseDto = scheduleService.findByUserId(userId);
+
+         return new ResponseEntity<>(schedulesResponseDto, HttpStatus.OK);
+     }
+
+
+
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateSchedule(
             @PathVariable Long id,
             @RequestBody UpdateScheduleRequestDto requestDto){
 
-        scheduleService.updateSchedule(id, requestDto.getTodo(), requestDto.getWriteUser(), requestDto.getPassword());
+        scheduleService.updateSchedule(id, requestDto.getTodo(), requestDto.getUserId(), requestDto.getPassword());
 
         return new ResponseEntity<>(HttpStatus.OK);
 

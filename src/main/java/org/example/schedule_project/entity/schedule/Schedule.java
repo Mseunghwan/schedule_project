@@ -1,7 +1,9 @@
-package org.example.schedule_project.entity;
+package org.example.schedule_project.entity.schedule;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.example.schedule_project.entity.BaseEntity;
+import org.example.schedule_project.entity.user.User;
 
 @Getter
 @Entity
@@ -15,8 +17,8 @@ public class Schedule extends BaseEntity {
     @Column(nullable = false)
     private String todo;
 
-    @Column(nullable = false)
-    private String writeUser;
+    @JoinColumn(name="userId")
+    private Long userId;
 
     @Column(nullable = false)
     private String password;
@@ -25,15 +27,15 @@ public class Schedule extends BaseEntity {
 
     }
 
-    public Schedule(String todo, String writeUser, String password) {
+    public Schedule(String todo, Long userId, String password) {
         this.todo = todo;
-        this.writeUser = writeUser;
+        this.userId = userId;
         this.password = password;
     }
 
-    public void update(String todo, String writeUser){
+    public void update(String todo, Long userId){
         this.todo = todo;
-        this.writeUser = writeUser;
+        this.userId = userId;
     }
 
 }
