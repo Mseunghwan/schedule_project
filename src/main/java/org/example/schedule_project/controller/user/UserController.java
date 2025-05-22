@@ -1,6 +1,7 @@
 package org.example.schedule_project.controller.user;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.schedule_project.dto.user.CreateUserRequestDto;
 import org.example.schedule_project.dto.user.UserRequestDto;
@@ -24,8 +25,8 @@ public class UserController {
 
     // 유저 생성
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody CreateUserRequestDto requestDto) {
-
+    public ResponseEntity<User> save(@RequestBody @Valid CreateUserRequestDto requestDto) {
+        // @Valid가 있어야 Dto로 받은 값의 유효성 검사가 작동한다
         UserResponseDto userResponseDto =
                 userService.save(
                         requestDto.getEmail(),

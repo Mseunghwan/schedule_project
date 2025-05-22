@@ -1,5 +1,6 @@
 package org.example.schedule_project.controller.schedule;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.schedule_project.dto.schedule.CreateScheduleRequestDto;
 import org.example.schedule_project.dto.schedule.DeleteScheduleRequestDto;
@@ -24,7 +25,8 @@ public class ScheduleController {
 
     // 일정 생성
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> save(@RequestBody CreateScheduleRequestDto requestDto) {
+    public ResponseEntity<ScheduleResponseDto> save(@RequestBody @Valid CreateScheduleRequestDto requestDto) {
+        // @Valid가 있어야 Dto로 받은 값의 유효성 검사가 작동한다
         ScheduleResponseDto scheduleResponseDto =
                 scheduleService.save(
                         requestDto.getTodo(),
