@@ -32,4 +32,12 @@ public class User extends BaseEntity {
         this.email = email;
         this.username = username;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.username = name;
+    }
 }

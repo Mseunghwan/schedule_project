@@ -39,4 +39,19 @@ public class Schedule extends BaseEntity {
         this.user = user;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setTodo(String todo) {
+        this.todo = todo;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

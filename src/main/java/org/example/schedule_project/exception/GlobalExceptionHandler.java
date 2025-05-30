@@ -30,6 +30,7 @@ public class GlobalExceptionHandler {
     // 이외 예외 발생 handler
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleOtherExceptions(Exception e) {
+        e.printStackTrace();
         log.error("예기치 못한 서버 오류 발생", e);
 
         Map<String, Object> body = new HashMap<>();
