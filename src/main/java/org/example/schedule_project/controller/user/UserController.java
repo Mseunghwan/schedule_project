@@ -7,7 +7,7 @@ import org.example.schedule_project.dto.user.CreateUserRequestDto;
 import org.example.schedule_project.dto.user.UserRequestDto;
 import org.example.schedule_project.dto.user.UserResponseDto;
 import org.example.schedule_project.entity.user.User;
-import org.example.schedule_project.service.user.UserService;
+import org.example.schedule_project.service.user.jdbc.UserServiceJdbc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceJdbc userService;
 
     // 유저 생성, 유저 조회, 유저 수정, 유저 삭제 구현
 

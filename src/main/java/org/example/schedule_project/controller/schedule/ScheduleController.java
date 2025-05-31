@@ -6,7 +6,7 @@ import org.example.schedule_project.dto.schedule.CreateScheduleRequestDto;
 import org.example.schedule_project.dto.schedule.DeleteScheduleRequestDto;
 import org.example.schedule_project.dto.schedule.ScheduleResponseDto;
 import org.example.schedule_project.dto.schedule.UpdateScheduleRequestDto;
-import org.example.schedule_project.repository.schedule.jdbc.ScheduleServiceJdbc;
+import org.example.schedule_project.service.schedule.jdbc.ScheduleServiceJdbc;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

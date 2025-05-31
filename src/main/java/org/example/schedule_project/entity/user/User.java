@@ -40,4 +40,8 @@ public class User extends BaseEntity {
     public void setName(String name) {
         this.username = name;
     }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
