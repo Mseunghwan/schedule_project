@@ -51,7 +51,6 @@ public class UserJdbcRepository {
         return list.stream().findFirst();
     }
 
-
 //      User 업데이트 (email, username)
 
     public void update(Long id, String email, String username) {

@@ -8,7 +8,7 @@ public class CreateScheduleRequestDto {
 
     // jakarta.validation 에서 import
     @NotBlank(message = "할일은 비어있을 수 없습니다.")
-    @Size(max = 200, message = "할일은 최대 200자 이내의 길이만 허용합니다.")
+    @Size(max = 200, message = "할일은 최대 200자 이내여야 합니다.")
     private final String todo;
 
     private final Long userId;
